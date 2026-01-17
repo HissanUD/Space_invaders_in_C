@@ -22,6 +22,12 @@ typedef enum
 
 } player_state;
 
+typedef enum
+{
+    moving,
+    hit
+} bullet_state;
+
 typedef struct
 {
     SDL_Texture *sprite;
@@ -29,6 +35,14 @@ typedef struct
     int player_speed;
     SDL_Rect dest;
 } Player;
+
+typedef struct
+{
+    SDL_Texture *sprite;
+    bullet_state state;
+    int bullet_speed;
+    SDL_Rect dest;
+} Bullet;
 
 typedef struct game
 {
@@ -38,7 +52,7 @@ typedef struct game
 } KeyPress;
 
 void init(AppState *app);
-void load(AppState *app, Player *player);
+void load_textures(AppState *app, Player *player, Bullet *bullet);
 void destroy(AppState *app, Player *player);
 void init_player(Player *player);
 
