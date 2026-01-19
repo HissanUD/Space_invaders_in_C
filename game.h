@@ -53,7 +53,7 @@ typedef struct game
 
 void init(AppState *app);
 void load_textures(AppState *app, Player *player, Bullet *bullet);
-void destroy(AppState *app, Player *player);
+void destroy(AppState *app, Player *player, Bullet *bullet);
 void init_player(Player *player);
 
 #endif

@@ -22,13 +22,14 @@ void init(AppState *app)
         printf("Error: %s\n", IMG_GetError());
         exit(1);
     }
-    app->window = SDL_CreateWindow("Space invaders", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1440, 1080, SDL_WINDOW_SHOWN);
+    app->window = SDL_CreateWindow("Space invaders", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1440, 1080, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     if (!app->window)
     {
         printf("Error: %s\n", SDL_GetError());
         exit(1);
     }
-    app->renderer = SDL_CreateRenderer(app->window, -1, SDL_RENDERER_ACCELERATED);
+    app->renderer = SDL_CreateRenderer(app->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    SDL_RenderSetLogicalSize(app->renderer, 1440, 1080);
 }
 
 void allocate_memory(AppState **app, Player **player, KeyPress **keys_pressed, Bullet **bullet)
@@ -76,11 +77,13 @@ void load_textures(AppState *app, Player *player, Bullet *bullet)
     bullet->sprite = SDL_CreateTextureFromSurface(app->renderer, temporary_bullet);
 
     SDL_FreeSurface(temporary_spaceship);
+    SDL_FreeSurface(temporary_bullet);
 }
 
-void destroy(AppState *app, Player *player)
+void destroy(AppState *app, Player *player, Bullet *bullet)
 {
     SDL_DestroyTexture(player->sprite);
+    SDL_DestroyTexture(bullet->sprite);
     SDL_DestroyWindow(app->window);
     SDL_DestroyRenderer(app->renderer);
     IMG_Quit();
@@ -216,7 +219,7 @@ int main(int argc, char **argv)
         SDL_Delay(16);
     }
 
-    destroy(app, player);
+    destroy(app, player, bullet);
     free(keys_pressed);
     free(bullet);
 
